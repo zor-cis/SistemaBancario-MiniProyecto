@@ -13,14 +13,15 @@ namespace Application.Services
         private readonly IClientRepository _repo;
         private readonly ItokenClient _token;
         private readonly LogService _log;
+        private readonly IEmailService _email;
 
         //Constructor que recibe las dependencias para el servicio.
-        public AuthClienteService(IClientRepository repo, ItokenClient token, LogService log)
+        public AuthClienteService(IClientRepository repo, ItokenClient token, LogService log, IEmailService email)
         {
             _repo = repo;
-            _token = token;            
+            _token = token;
             _log = log;
-
+            _email = email;
         }
 
         //Este metodo maneja el inicion de sesion de un cliente, se valida si el cliente existe
@@ -80,19 +81,19 @@ namespace Application.Services
             {
                 if (!isValidateEmail(dto.Email))
                 {
-                    await _log.LogLoginUser(dto.Email, false);
+                    await _log.LogSignUpUser(dto.Email, false);
                     throw new ArgumentException("Correo invalido");
                 }
 
                 if (!isValidatePassword(dto.Password))
                 {
-                    await _log.LogLoginUser(dto.Email, false);
+                    await _log.LogSignUpUser(dto.Email, false);
                     throw new ArgumentException("La contraseña debe tener al menos 6 caracteres, un número y una letra mayúscula.");
                 }
 
                 if (dto.Age() < 18)
                 {
-                    await _log.LogLoginUser(dto.Email, false);
+                    await _log.LogSignUpUser(dto.Email, false);
                     throw new ArgumentException("Debe ser mayor de edad para registrarte");
                 }
 
@@ -101,13 +102,13 @@ namespace Application.Services
 
                 if (exist_email != null)
                 {
-                    await _log.LogLoginUser(dto.Email, false);
+                    await _log.LogSignUpUser(dto.Email, false);
                     throw new ArgumentException("Ya existe una cuenta con este correo");
                 }
 
                if (exist_dti != null)
                 {
-                    await _log.LogLoginUser(dto.Email, false);
+                    await _log.LogSignUpUser(dto.Email, false);
                     throw new ArgumentException("Este nuemero de documento ya esta registrado en el sistema.");
                 }
 
@@ -126,9 +127,24 @@ namespace Application.Services
                 );
 
                 await _repo.AddClient(client);
-                await _log.LogLoginUser(dto.Email, true);
+                await _log.LogSignUpUser(dto.Email, true);
 
                 var token = _token.CreateToken(client);
+
+                _ = Task.Run(async () => {
+                    try
+                    {
+                        await _email.SendWelcomeEmail(new EmailRequest
+                        {
+                            ToEmail = client.Email,
+                            FullName = client.FullName(),
+                        });
+                    }
+                    catch (Exception ex) 
+                    { 
+                        throw new ArgumentException("Error al enviar email de bienvenida", ex);
+                    }
+                });
 
                 return new AuthClient
                 {
@@ -139,13 +155,10 @@ namespace Application.Services
             }
             catch (Exception ex)
             {
-                await _log.LogLoginUser(dto.Email, false);
+                await _log.LogSignUpUser(dto.Email, false);
                 throw new InvalidOperationException("Error al registrarse", ex);
             }
         }
-
-
-
 
 
         //#METODOS AUXILIARES: Validacion de Email y Password
