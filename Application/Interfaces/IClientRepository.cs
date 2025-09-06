@@ -11,6 +11,7 @@ namespace Application.Interfaces
     {
         Task<Client?> GetClientByEmail(string email);
         Task<Client?> GetDocumentTypeId(int documentTypeId);
+        Task<Client?> GetClientById(int clientId);
         Task AddClient(Client client);
     }
 }

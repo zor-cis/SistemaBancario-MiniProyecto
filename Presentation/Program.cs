@@ -31,6 +31,10 @@ builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthClient, AuthClienteService>();
 builder.Services.AddScoped<ItokenClient, TokenClientService>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IUserContextService, UserServiceContext>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSingleton<LogService>(provider => LogService.Instance);
 // Add services to the container.

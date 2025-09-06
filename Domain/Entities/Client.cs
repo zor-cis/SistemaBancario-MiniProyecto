@@ -20,6 +20,9 @@ namespace Domain.Entities
         public DateTime DateOfBirth { get; set; }
         public string Password { get; set; }
 
+        public ICollection<Account> Accounts { get; set; } = new List<Account>();
+
+
         public Client(int id, string name, string lastName, int documentTypeId, string email, long phoneNumber, int age, DateTime dateOfBirth, string password)
         {
 

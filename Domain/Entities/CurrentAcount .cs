@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Enums;
 
 //Esta clase hereda de Account y representa una cuenta corriente, sin limite de retiro , pero con un monto minimo de deposito de 1000.
 
@@ -10,7 +11,7 @@ namespace Domain.Entities
 {
     public class CurrentAcount : Account
     {
-        public CurrentAcount(string accountNumber, string holderAccount, Client client) : base(accountNumber, "Cuenta Corriente", holderAccount, client)
+        public CurrentAcount(string accountNumber, string holderAccount, Client client, int IdClient) : base(accountNumber, AccountType.Current, holderAccount, client, IdClient)
         {
         }
 

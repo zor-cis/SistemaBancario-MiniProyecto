@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,27 +12,17 @@ namespace Domain.Entities
     public abstract class Account
     {
         public string AccountNumber { get; private set; }
-        public string TypeAccount { get; private set; }
+        public AccountType TypeAccount { get; private set; }
         public string HolderAccount { get; set; }
+
+        public int IdClient { get; set; }
         public Client Client { get; set; }
         public decimal Balance { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool isActive { get; set; }
 
-        public Account(string accountNumber, string typeAccount, string holderAccount, Client client)
+        public Account(string accountNumber, AccountType typeAccount, string holderAccount, Client client, int idClient)
         {
-            //Validamos que parametros importantes no puedan ser nulos o negativos.
-
-            if (string.IsNullOrEmpty(holderAccount))
-                throw new ArgumentException("La cuenta debe tener un titular");
-            if(client == null)
-                throw new ArgumentNullException(nameof(client), "Cliente nulo");
-
-            if (string.IsNullOrEmpty(accountNumber))
-                throw new ArgumentException("El numero de la cuenta no puede estar vacio");
-
-            if(Balance < 0)
-                throw new ArgumentException("El saldo inicial no puede ser negativo");
 
             AccountNumber = accountNumber;
             TypeAccount = typeAccount;
@@ -40,7 +31,11 @@ namespace Domain.Entities
             Balance = 0;
             CreatedAt = DateTime.Now;
             isActive = true;
+            IdClient = idClient;
+
         }
+
+        public Account() { }
 
         public abstract void Withdraw(decimal amount);
 

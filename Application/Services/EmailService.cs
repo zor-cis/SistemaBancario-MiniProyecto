@@ -19,7 +19,7 @@ namespace Application.Services
                 SmtpPort = int.Parse(confi["Email:SmtpPort"] ?? "587"),
                 SenderEmail = confi["Email:SenderEmail"] ?? "",
                 SenderName = confi["Email:SenderName"] ?? "Sistema Bancario",
-                Username = confi["Email:Username"] ?? "",
+                Username = confi["Email:UserName"] ?? "",
                 Password = confi["Email:Password"] ?? "",
                 EnableSsl = bool.Parse(confi["Email:EnableSsl"] ?? "true")
 

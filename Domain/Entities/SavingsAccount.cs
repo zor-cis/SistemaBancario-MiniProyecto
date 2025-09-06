@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Domain.Entities
         //Establecemos el limite de retiros, que en este caso seria de un 50%.
         public decimal limit { get; private set; } = 0.50m;
 
-        public SavingsAccount(string accountNumber, string holderAccount, Client client) : base(accountNumber, "Cuenta de Ahorros", holderAccount, client)
+        public SavingsAccount(string accountNumber, string holderAccount, Client client, int IdClient) : base(accountNumber, AccountType.Saving, holderAccount, client, IdClient)
         {
         }
 

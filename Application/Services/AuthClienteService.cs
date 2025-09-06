@@ -131,6 +131,7 @@ namespace Application.Services
 
                 var token = _token.CreateToken(client);
 
+               
                 _ = Task.Run(async () => {
                     try
                     {
@@ -142,7 +143,7 @@ namespace Application.Services
                     }
                     catch (Exception ex) 
                     { 
-                        throw new ArgumentException("Error al enviar email de bienvenida", ex);
+                        await _log.LogErrorEmail(client.Email, ex);
                     }
                 });
 

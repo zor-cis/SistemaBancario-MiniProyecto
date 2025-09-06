@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Microsoft.Extensions.DependencyInjection;
 //Esta clase es la responsabe de manejar el servicio de logueo de todo el sistema.
 namespace Application.Services
 {
@@ -38,7 +39,7 @@ namespace Application.Services
         {
             try
             {
-                await File.AppendAllTextAsync(_logFilePath, message + Environment.NewLine); 
+                await File.AppendAllTextAsync(_logFilePath, message + Environment.NewLine);
                 // Agrega una nueva línea después de cada mensaje para que cada log este separado y sea entendible.
             }
             catch (Exception ex)
@@ -53,7 +54,7 @@ namespace Application.Services
             try
             {
                 var result = Exited ? "exitoso" : "fallido";
-                var logMessage = $"{DateTime.Now: dd-MM-yyyy} Login {result} - Email: {email}";
+                var logMessage = $"{DateTime.Now:dd-MM-yyyy} Login {result} - Email: {email}";
                 await WriteLog(logMessage);
             }
             catch (Exception ex)
@@ -68,12 +69,25 @@ namespace Application.Services
             try
             {
                 var result = Exited ? "exitoso" : "fallido";
-                var logMessage = $"{DateTime.Now: dd-MM-yyyy} Registro {result} - Email: {email}";
+                var logMessage = $"{DateTime.Now:dd-MM-yyyy} Registro {result} - Email: {email}";
                 await WriteLog(logMessage);
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Error al registrar el inicio de sesión", ex);
+            }
+        }
+
+        public async Task LogErrorEmail(string email, Exception ex)
+        {
+            try
+            {
+                var logMessage = $"{DateTime.Now:dd-MM-yyyy} Error al enviar email a {email} - Error: {ex.Message}";
+                await WriteLog(logMessage);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException("Error al registrar el error de email", e);
             }
         }
     }

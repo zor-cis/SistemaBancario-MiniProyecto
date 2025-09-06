@@ -15,6 +15,7 @@ namespace Infrastructure.Persistence.Context
         }
 
         public DbSet<Client> Client { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,19 @@ namespace Infrastructure.Persistence.Context
                 en.Property(c => c.Password).HasColumnName("password").IsRequired().HasMaxLength(255);
                 en.Property(c => c.Age).HasColumnName("age");
 
+            });
+
+            modelBuilder.Entity<Account>(en => 
+            {
+                en.HasKey(c => c.AccountNumber);
+                en.Property(c => c.AccountNumber).HasColumnName("AccountNumber").IsRequired().HasMaxLength(20);
+                en.Property(c => c.TypeAccount).HasColumnName("TypeAccount").IsRequired();
+                en.Property(c => c.HolderAccount).HasColumnName("HolderAccount").IsRequired().HasMaxLength(100);
+                en.Property(c => c.IdClient).HasColumnName("IdClient").IsRequired();
+                en.Property(c => c.Balance).HasColumnName("Balance").IsRequired().HasColumnType("decimal(18,2)").HasDefaultValue(0);
+                en.Property(c => c.CreatedAt).HasColumnName("CreatedAt").IsRequired();
+                en.Property(c => c.isActive).HasColumnName("isActive").HasDefaultValue(true);
+                en.HasOne(a => a.Client).WithMany(c => c.Accounts).HasForeignKey(a => a.IdClient);
             });
         }
 

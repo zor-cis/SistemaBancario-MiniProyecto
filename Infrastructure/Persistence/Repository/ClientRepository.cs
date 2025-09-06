@@ -24,6 +24,11 @@ namespace Infrastructure.Persistence.Repository
             return await _con.Client.FirstOrDefaultAsync(c => c.Email == email);
         }
 
+        public Task<Client?> GetClientById(int clientId)
+        {
+           return _con.Client.FirstOrDefaultAsync(c => c.Id == clientId);
+        }
+
         public async Task<Client?> GetDocumentTypeId(int documentTypeId)
         {
             return await _con.Client.FirstOrDefaultAsync(c => c.DocumentTypeId == documentTypeId);
