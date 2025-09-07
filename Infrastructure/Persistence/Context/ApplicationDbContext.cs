@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Context
@@ -41,11 +42,12 @@ namespace Infrastructure.Persistence.Context
                 en.Property(c => c.AccountNumber).HasColumnName("AccountNumber").IsRequired().HasMaxLength(20);
                 en.Property(c => c.TypeAccount).HasColumnName("TypeAccount").IsRequired();
                 en.Property(c => c.HolderAccount).HasColumnName("HolderAccount").IsRequired().HasMaxLength(100);
-                en.Property(c => c.IdClient).HasColumnName("IdClient").IsRequired();
+                en.Property(c => c.IdClient).HasColumnName("ClientId").IsRequired();
                 en.Property(c => c.Balance).HasColumnName("Balance").IsRequired().HasColumnType("decimal(18,2)").HasDefaultValue(0);
                 en.Property(c => c.CreatedAt).HasColumnName("CreatedAt").IsRequired();
                 en.Property(c => c.isActive).HasColumnName("isActive").HasDefaultValue(true);
                 en.HasOne(a => a.Client).WithMany(c => c.Accounts).HasForeignKey(a => a.IdClient);
+                en.HasDiscriminator<AccountType>("TypeAccount").HasValue<SavingsAccount>(AccountType.Saving).HasValue<CurrentAcount>(AccountType.Current);
             });
         }
 

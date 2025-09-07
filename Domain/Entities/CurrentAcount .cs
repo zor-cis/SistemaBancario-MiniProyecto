@@ -15,6 +15,8 @@ namespace Domain.Entities
         {
         }
 
+        public CurrentAcount() { }
+
         //Establecemos un metodo de retiro sin limites pero que valide que el monto debe ser mayor a cero y no debe exceder el balance.
         public override void Withdraw(decimal amount)
         {

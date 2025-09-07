@@ -11,8 +11,8 @@ namespace Domain.Entities
 {
     public abstract class Account
     {
-        public string AccountNumber { get; private set; }
-        public AccountType TypeAccount { get; private set; }
+        public string AccountNumber { get; set; }
+        public AccountType TypeAccount { get; set; }
         public string HolderAccount { get; set; }
 
         public int IdClient { get; set; }
@@ -35,7 +35,12 @@ namespace Domain.Entities
 
         }
 
-        public Account() { }
+        public Account() 
+        {
+            Balance = 0;
+            CreatedAt = DateTime.Now;
+            isActive = true;
+        }
 
         public abstract void Withdraw(decimal amount);
 

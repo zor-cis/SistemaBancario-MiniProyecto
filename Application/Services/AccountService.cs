@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Domain.Entities;
 using Domain.Factories;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Application.Services
 {
@@ -33,7 +34,15 @@ namespace Application.Services
                 );
 
             await _repo.AddAccount(account);
-            return account;
+            return new AccountResponse
+            {
+               AccountNumber = account.AccountNumber,
+               TypeAccount = (int)account.TypeAccount,
+               HolderAccount = account.HolderAccount,
+               Balance = account.Balance,
+               CreatedAt = account.CreatedAt,
+               isActive = account.isActive
+            };
         }
     }
 }

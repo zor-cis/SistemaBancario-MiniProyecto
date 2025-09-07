@@ -4,5 +4,5 @@
     {
             Saving = 0,
             Current = 1
-        }
+    }
 }

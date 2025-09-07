@@ -18,6 +18,8 @@ namespace Domain.Entities
         {
         }
 
+        public SavingsAccount() { }
+
         //Indicamos que en la cuenta de ahorro el retiro no puede exceder el 50% del saldo disponible
         public override void Withdraw(decimal amount)
         {
