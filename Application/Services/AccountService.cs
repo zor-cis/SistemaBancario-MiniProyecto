@@ -19,7 +19,7 @@ namespace Application.Services
             _client = client;
         }
 
-        public async Task<Account> CreateAccount(AccountCreate dto)
+        public async Task<AccountResponse> CreateAccount(AccountCreate dto)
         {
             var user = await _client.GetClientById(dto.idClient);
             if(user == null)
@@ -36,12 +36,12 @@ namespace Application.Services
             await _repo.AddAccount(account);
             return new AccountResponse
             {
-               AccountNumber = account.AccountNumber,
-               TypeAccount = (int)account.TypeAccount,
-               HolderAccount = account.HolderAccount,
-               Balance = account.Balance,
-               CreatedAt = account.CreatedAt,
-               isActive = account.isActive
+                AccountNumber = account.AccountNumber,
+                TypeAccount = (int)account.TypeAccount,
+                HolderAccount = account.HolderAccount,
+                Balance = account.Balance,
+                CreatedAt = account.CreatedAt,
+                isActive = account.isActive
             };
         }
     }

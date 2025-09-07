@@ -49,7 +49,8 @@ namespace Infrastructure.Persistence.Context
                 en.HasOne(a => a.Client).WithMany(c => c.Accounts).HasForeignKey(a => a.IdClient);
                 en.HasDiscriminator<AccountType>("TypeAccount").HasValue<SavingsAccount>(AccountType.Saving).HasValue<CurrentAcount>(AccountType.Current);
             });
-        }
 
+            modelBuilder.Entity<SavingsAccount>().Ignore(c => c.limit);
+        }
     }
 }
